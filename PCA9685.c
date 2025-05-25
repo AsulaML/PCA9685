@@ -20,8 +20,8 @@
  */
 void PCA9685_Init()
 {
-	PCA9685_Reset();
-	PCA9685_Set_PWM_Frequency(1000);	
+    PCA9685_Reset();
+    PCA9685_Set_PWM_Frequency(1000);	
 }
 
 
@@ -35,8 +35,8 @@ void PCA9685_Init()
  */
 void PCA9685_Reset()
 {
-	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_1, 0x00); // Normal mode
-	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_2, 0x04); // totem pole (default)
+    PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_1, 0x00); // Normal mode
+    PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_2, 0x04); // totem pole (default)
 }
 
 
@@ -46,12 +46,12 @@ void PCA9685_Reset()
  */
 void PCA9685_Set_PWM_Frequency(int freq)
 {
-	uint8_t prescale_val = (CLOCK_FREQ / 4096 / freq)  - 1;
+    uint8_t prescale_val = (CLOCK_FREQ / 4096 / freq)  - 1;
 
-	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_1, 0x10); //sleep
-	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_PRE_SCALE, prescale_val); // multiplyer for PWM frequency
-	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_1, 0x80); //restart
-	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_2, 0x04); //totem pole (default)
+    PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_1, 0x10); //sleep
+    PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_PRE_SCALE, prescale_val); // multiplyer for PWM frequency
+    PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_1, 0x80); //restart
+    PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_2, 0x04); //totem pole (default)
 }
 
 
@@ -84,7 +84,7 @@ void PCA9685_Set_PWM_Duty_REG(uint8_t ch, int on_value, int off_value)
 {
     PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_ON_L + PCA9685_CH_LED_MULTIPLYER * (ch), on_value & 0xFF); 
     PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_ON_H + PCA9685_CH_LED_MULTIPLYER * (ch), on_value >> 8); 
-    
+
     PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_OFF_L + PCA9685_CH_LED_MULTIPLYER * (ch), off_value & 0xFF); 
     PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_OFF_H + PCA9685_CH_LED_MULTIPLYER * (ch), off_value >> 8); 
 }
@@ -100,24 +100,23 @@ void PCA9685_Set_PWM_Duty_REG(uint8_t ch, int on_value, int off_value)
  */
 int PCA9685_Get_PWM(uint8_t ch)
 {
-	int ledval = 0;
-	uint8_t temp = 0;
-	uint8_t temp2 = 0;
-	
-	temp = PCA9685_Read(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_ON_L + PCA9685_CH_LED_MULTIPLYER * (ch));
-	temp2 = PCA9685_Read(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_ON_H + PCA9685_CH_LED_MULTIPLYER * (ch));
-	ledval = temp | (temp2 << 8);
-	
-	return ledval;
+    int ledval = 0;
+    uint8_t temp = 0;
+    uint8_t temp2 = 0;
+
+    temp = PCA9685_Read(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_ON_L + PCA9685_CH_LED_MULTIPLYER * (ch));
+    temp2 = PCA9685_Read(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_ON_H + PCA9685_CH_LED_MULTIPLYER * (ch));
+    ledval = temp | (temp2 << 8);
+
+    return ledval;
 }
 
 
 
 
 
-void PCA9685_Write(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t Data) {
-    
-   
+void PCA9685_Write(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t Data) 
+{
     uint8_t         writeBuffer[5];
     uint16_t        timeOut, slaveTimeOut;
 
@@ -141,9 +140,9 @@ void PCA9685_Write(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t
     {
         // write
         I2C2_MasterWrite(writeBuffer,
-                         2,
-                         SlaveDeviceAddress,
-                         &status);
+                            2,
+                            SlaveDeviceAddress,
+                            &status);
 
         // wait for the message to be sent or status has changed.
         while(status == I2C2_MESSAGE_PENDING)
@@ -179,9 +178,8 @@ void PCA9685_Write(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t
 
 
 
-uint8_t PCA9685_Read(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t *Data) {
-    
-    
+uint8_t PCA9685_Read(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t *Data) 
+{
     I2C2_MESSAGE_STATUS status;
     I2C2_TRANSACTION_REQUEST_BLOCK readTRB[2];
     uint8_t     writeBuffer[3];
@@ -198,16 +196,16 @@ uint8_t PCA9685_Read(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8
     // we need to create the TRBs for a random read sequence to the EEPROM
     // Build TRB for sending address
     I2C2_MasterWriteTRBBuild( &readTRB[0],
-                              writeBuffer,
-                              1,
-                              SlaveDeviceAddress);
-    
-    
+                                writeBuffer,
+                                1,
+                                SlaveDeviceAddress);
+
+
     // Build TRB for receiving data
     I2C2_MasterReadTRBBuild( &readTRB[1],
-                             readBuffer,
-                             1,
-                             SlaveDeviceAddress);
+                                readBuffer,
+                                1,
+                                SlaveDeviceAddress);
 
     timeOut = 0;
     slaveTimeOut = 0;
@@ -248,7 +246,7 @@ uint8_t PCA9685_Read(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8
             timeOut++;
 
     }
-    
+
     uint8_t value = readBuffer[0];
     *Data = value;
     return (1);
