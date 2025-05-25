@@ -35,8 +35,8 @@ void PCA9685_Init()
  */
 void PCA9685_Reset()
 {
-	PCA9685_Write(PCA9685_ADDR, PCA9685_REG_ADDR_MODE_1, 0x00); // Normal mode
-	PCA9685_Write(PCA9685_ADDR, PCA9685_REG_ADDR_MODE_2, 0x04); // totem pole (default)
+	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_1, 0x00); // Normal mode
+	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_2, 0x04); // totem pole (default)
 }
 
 
@@ -48,10 +48,10 @@ void PCA9685_Set_PWM_Frequency(int freq)
 {
 	uint8_t prescale_val = (CLOCK_FREQ / 4096 / freq)  - 1;
 
-	PCA9685_Write(PCA9685_ADDR, PCA9685_REG_ADDR_MODE_1, 0x10); //sleep
-	PCA9685_Write(PCA9685_ADDR, PCA9685_REG_ADDR_PRE_SCALE, prescale_val); // multiplyer for PWM frequency
-	PCA9685_Write(PCA9685_ADDR, PCA9685_REG_ADDR_MODE_1, 0x80); //restart
-	PCA9685_Write(PCA9685_ADDR, PCA9685_REG_ADDR_MODE_2, 0x04); //totem pole (default)
+	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_1, 0x10); //sleep
+	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_PRE_SCALE, prescale_val); // multiplyer for PWM frequency
+	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_1, 0x80); //restart
+	PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_MODE_2, 0x04); //totem pole (default)
 }
 
 
@@ -82,11 +82,11 @@ void PCA9685_Set_PWM_Duty(uint8_t led, int value)
  */
 void PCA9685_Set_PWM_Duty_REG(uint8_t ch, int on_value, int off_value)
 {
-    PCA9685_Write(PCA9685_ADDR, PCA9685_REG_ADDR_LED0_ON_L + PCA9685_CH_LED_MULTIPLYER * (ch), on_value & 0xFF); 
-    PCA9685_Write(PCA9685_ADDR, PCA9685_REG_ADDR_LED0_ON_H + PCA9685_CH_LED_MULTIPLYER * (ch), on_value >> 8); 
+    PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_ON_L + PCA9685_CH_LED_MULTIPLYER * (ch), on_value & 0xFF); 
+    PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_ON_H + PCA9685_CH_LED_MULTIPLYER * (ch), on_value >> 8); 
     
-    PCA9685_Write(PCA9685_ADDR, PCA9685_REG_ADDR_LED0_OFF_L + PCA9685_CH_LED_MULTIPLYER * (ch), off_value & 0xFF); 
-    PCA9685_Write(PCA9685_ADDR, PCA9685_REG_ADDR_LED0_OFF_H + PCA9685_CH_LED_MULTIPLYER * (ch), off_value >> 8); 
+    PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_OFF_L + PCA9685_CH_LED_MULTIPLYER * (ch), off_value & 0xFF); 
+    PCA9685_Write(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_OFF_H + PCA9685_CH_LED_MULTIPLYER * (ch), off_value >> 8); 
 }
 
 
@@ -104,8 +104,8 @@ int PCA9685_Get_PWM(uint8_t ch)
 	uint8_t temp = 0;
 	uint8_t temp2 = 0;
 	
-	temp = PCA9685_Read(PCA9685_ADDR, PCA9685_REG_ADDR_LED0_ON_L + PCA9685_CH_LED_MULTIPLYER * (ch));
-	temp2 = PCA9685_Read(PCA9685_ADDR, PCA9685_REG_ADDR_LED0_ON_H + PCA9685_CH_LED_MULTIPLYER * (ch));
+	temp = PCA9685_Read(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_ON_L + PCA9685_CH_LED_MULTIPLYER * (ch));
+	temp2 = PCA9685_Read(PCA9685_SLAVE_ADDR, PCA9685_REG_ADDR_LED0_ON_H + PCA9685_CH_LED_MULTIPLYER * (ch));
 	ledval = temp | (temp2 << 8);
 	
 	return ledval;

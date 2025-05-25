@@ -4,7 +4,7 @@
 #include "I2C2.h"
 
 
-#define PCA9685_ADDR 0b1000000
+#define PCA9685_SLAVE_ADDR 0b1000000
 
 // Register Definitions
 
