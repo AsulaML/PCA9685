@@ -19,7 +19,28 @@ void Init_PCA9685()
 
 
 
-//! Sets PCA9685 mode to 00
+/**
+ * \fn Reset_PCA9685()
+ * \brief Fonction de reset du PCA9685.
+ *
+ * \param    void
+ * \return   void
+ */
+void Reset_PCA9685()
+{
+	Write_PCA9685(PCA9685_ADDR, MODE1, 0x00); // Normal mode
+	Write_PCA9685(PCA9685_ADDR, MODE2, 0x04); // totem pole (default)
+}
+
+
+void Reset_PCA9685()
+{
+	Write_PCA9685(PCA9685_ADDR, MODE1, 0x00); //Normal mode
+	Write_PCA9685(PCA9685_ADDR, MODE2, 0x04); //totem pole (default)
+}       
+
+
+
 void Reset_PCA9685()
 {
 	Write_PCA9685(PCA9685_ADDR, MODE1, 0x00); //Normal mode
