@@ -38,7 +38,7 @@ void setPWM(uint8_t led, int on_value, int off_value);
 int getPWM(uint8_t led);
 
 
-void Write_PCA9685(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t Data);
+void PCA9685_Write(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t Data);
 uint8_t Read_PCA9685(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t *Data);
 
 

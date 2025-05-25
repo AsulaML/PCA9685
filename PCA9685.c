@@ -28,25 +28,9 @@ void Init_PCA9685()
  */
 void Reset_PCA9685()
 {
-	Write_PCA9685(PCA9685_ADDR, MODE1, 0x00); // Normal mode
-	Write_PCA9685(PCA9685_ADDR, MODE2, 0x04); // totem pole (default)
+	PCA9685_Write(PCA9685_ADDR, MODE1, 0x00); // Normal mode
+	PCA9685_Write(PCA9685_ADDR, MODE2, 0x04); // totem pole (default)
 }
-
-
-void Reset_PCA9685()
-{
-	Write_PCA9685(PCA9685_ADDR, MODE1, 0x00); //Normal mode
-	Write_PCA9685(PCA9685_ADDR, MODE2, 0x04); //totem pole (default)
-}       
-
-
-
-void Reset_PCA9685()
-{
-	Write_PCA9685(PCA9685_ADDR, MODE1, 0x00); //Normal mode
-	Write_PCA9685(PCA9685_ADDR, MODE2, 0x04); //totem pole (default)
-}
-
 
 
 //! Set the frequency of PWM
@@ -56,10 +40,10 @@ void Reset_PCA9685()
 void setPWMFrequency(int freq)
 {
 	uint8_t prescale_val = (CLOCK_FREQ / 4096 / freq)  - 1;
-	Write_PCA9685(PCA9685_ADDR, MODE1, 0x10); //sleep
-	Write_PCA9685(PCA9685_ADDR, PRE_SCALE, prescale_val); // multiplyer for PWM frequency
-	Write_PCA9685(PCA9685_ADDR, MODE1, 0x80); //restart
-	Write_PCA9685(PCA9685_ADDR, MODE2, 0x04); //totem pole (default)
+	PCA9685_Write(PCA9685_ADDR, MODE1, 0x10); //sleep
+	PCA9685_Write(PCA9685_ADDR, PRE_SCALE, prescale_val); // multiplyer for PWM frequency
+	PCA9685_Write(PCA9685_ADDR, MODE1, 0x80); //restart
+	PCA9685_Write(PCA9685_ADDR, MODE2, 0x04); //totem pole (default)
 }
 
 
@@ -85,11 +69,11 @@ void setPWM_PCA9685(uint8_t led, int value)
  */
 void setPWM(uint8_t led, int on_value, int off_value)
 {
-		Write_PCA9685(PCA9685_ADDR, LED0_ON_L + LED_MULTIPLYER * (led), on_value & 0xFF); 
-		Write_PCA9685(PCA9685_ADDR, LED0_ON_H + LED_MULTIPLYER * (led), on_value >> 8); 
+		PCA9685_Write(PCA9685_ADDR, LED0_ON_L + LED_MULTIPLYER * (led), on_value & 0xFF); 
+		PCA9685_Write(PCA9685_ADDR, LED0_ON_H + LED_MULTIPLYER * (led), on_value >> 8); 
 		
-		Write_PCA9685(PCA9685_ADDR, LED0_OFF_L + LED_MULTIPLYER * (led), off_value & 0xFF); 
-		Write_PCA9685(PCA9685_ADDR, LED0_OFF_H + LED_MULTIPLYER * (led), off_value >> 8); 
+		PCA9685_Write(PCA9685_ADDR, LED0_OFF_L + LED_MULTIPLYER * (led), off_value & 0xFF); 
+		PCA9685_Write(PCA9685_ADDR, LED0_OFF_H + LED_MULTIPLYER * (led), off_value >> 8); 
 }
 
 
@@ -115,7 +99,7 @@ int getPWM(uint8_t led)
 
 
 
-void Write_PCA9685(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t Data) {
+void PCA9685_Write(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t Data) {
     
    
     uint8_t         writeBuffer[5];
