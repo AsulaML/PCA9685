@@ -35,11 +35,11 @@ void PCA9685_Reset();
 void PCA9685_Set_PWM_Frequency(int freq);
 void PCA9685_Set_PWM_Duty(uint8_t led, int value);
 void PCA9685_Set_PWM_Duty_REG(uint8_t led, int on_value, int off_value);
-int getPWM(uint8_t led);
+int PCA9685_Get_PWM(uint8_t led);
 
 
 void PCA9685_Write(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t Data);
-uint8_t Read_PCA9685(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t *Data);
+uint8_t PCA9685_Read(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t *Data);
 
 
 #endif

@@ -6,7 +6,6 @@
  */
 
 
-#include <xc.h>
 #include "PCA9685.h"
 
 
@@ -82,32 +81,35 @@ void PCA9685_Set_PWM_Duty(uint8_t led, int value)
  */
 void PCA9685_Set_PWM_Duty_REG(uint8_t ch, int on_value, int off_value)
 {
-		PCA9685_Write(PCA9685_ADDR, LED0_ON_L + LED_MULTIPLYER * (ch), on_value & 0xFF); 
-		PCA9685_Write(PCA9685_ADDR, LED0_ON_H + LED_MULTIPLYER * (ch), on_value >> 8); 
-		
-		PCA9685_Write(PCA9685_ADDR, LED0_OFF_L + LED_MULTIPLYER * (ch), off_value & 0xFF); 
-		PCA9685_Write(PCA9685_ADDR, LED0_OFF_H + LED_MULTIPLYER * (ch), off_value >> 8); 
+    PCA9685_Write(PCA9685_ADDR, LED0_ON_L + LED_MULTIPLYER * (ch), on_value & 0xFF); 
+    PCA9685_Write(PCA9685_ADDR, LED0_ON_H + LED_MULTIPLYER * (ch), on_value >> 8); 
+    
+    PCA9685_Write(PCA9685_ADDR, LED0_OFF_L + LED_MULTIPLYER * (ch), off_value & 0xFF); 
+    PCA9685_Write(PCA9685_ADDR, LED0_OFF_H + LED_MULTIPLYER * (ch), off_value >> 8); 
 }
 
 
 
-//! Get current PWM value
-/*!
- \param led channel (0-15) to get PWM value from
+/**
+ * \fn PCA9685_Get_PWM()
+ * \brief Fonction de get de la duty cycle d'un PWM.
+ *
+ * \param    ch : numéro du PWM
+ * \return   int : valeur de la duty cycle
  */
-int getPWM(uint8_t led)
+int PCA9685_Get_PWM(uint8_t ch)
 {
 	int ledval = 0;
 	uint8_t temp = 0;
+	uint8_t temp2 = 0;
 	
-	Read_PCA9685(PCA9685_ADDR, LED0_OFF_H + LED_MULTIPLYER * (led) , &temp);
-	ledval = temp & 0xf;
-	ledval <<= 8;
-	Read_PCA9685(PCA9685_ADDR, LED0_OFF_L + LED_MULTIPLYER * (led) , &temp);
-	ledval += temp;
+	temp = PCA9685_Read(PCA9685_ADDR, LED0_ON_L + LED_MULTIPLYER * (ch));
+	temp2 = PCA9685_Read(PCA9685_ADDR, LED0_ON_H + LED_MULTIPLYER * (ch));
+	ledval = temp | (temp2 << 8);
 	
 	return ledval;
 }
+
 
 
 
@@ -176,7 +178,7 @@ void PCA9685_Write(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t
 
 
 
-uint8_t Read_PCA9685(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t *Data) {
+uint8_t PCA9685_Read(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t *Data) {
     
     
     I2C2_MESSAGE_STATUS status;
