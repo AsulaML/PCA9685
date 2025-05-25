@@ -30,11 +30,11 @@
 
 
 
-void Init_PCA9685();
-void Reset_PCA9685();
-void setPWMFrequency(int freq);
-void setPWM_PCA9685(uint8_t led, int value);
-void setPWM(uint8_t led, int on_value, int off_value);
+void PCA9685_Init();
+void PCA9685_Reset();
+void PCA9685_Set_PWM_Frequency(int freq);
+void PCA9685_Set_PWM_Duty(uint8_t led, int value);
+void PCA9685_Set_PWM_Duty_REG(uint8_t led, int on_value, int off_value);
 int getPWM(uint8_t led);
 
 

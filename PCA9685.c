@@ -11,10 +11,18 @@
 
 
 
-void Init_PCA9685()
+
+/**
+ * \fn PCA9685_Init
+ * \brief Fonction de configuration du PCA9685.
+ *
+ * \param    void
+ * \return   void
+ */
+void PCA9685_Init()
 {
-	Reset_PCA9685();
-	setPWMFrequency(1000);	
+	PCA9685_Reset();
+	PCA9685_Set_PWM_Frequency(1000);	
 }
 
 
@@ -26,7 +34,7 @@ void Init_PCA9685()
  * \param    void
  * \return   void
  */
-void Reset_PCA9685()
+void PCA9685_Reset()
 {
 	PCA9685_Write(PCA9685_ADDR, MODE1, 0x00); // Normal mode
 	PCA9685_Write(PCA9685_ADDR, MODE2, 0x04); // totem pole (default)
@@ -37,7 +45,7 @@ void Reset_PCA9685()
 /*!
  \param freq desired frequency. 40Hz to 1000Hz using internal 25MHz oscillator.
  */
-void setPWMFrequency(int freq)
+void PCA9685_Set_PWM_Frequency(int freq)
 {
 	uint8_t prescale_val = (CLOCK_FREQ / 4096 / freq)  - 1;
 	PCA9685_Write(PCA9685_ADDR, MODE1, 0x10); //sleep
@@ -49,31 +57,36 @@ void setPWMFrequency(int freq)
 
 
 
-//! PWM a single channel
-/*!
- \param led channel (0-15) to set PWM value for
- \param value 0-4095 value for PWM
+/**
+ * \fn PCA9685_Set_PWM_Duty()
+ * \brief Fonction  de set de la duty cycle d'un PWM.
+ *
+ * \param    void
+ * \return   void
  */
-void setPWM_PCA9685(uint8_t led, int value) 
+void PCA9685_Set_PWM_Duty(uint8_t led, int value) 
 {
-		setPWM(led, 0, value);
+    PCA9685_Set_PWM_Duty_REG(led, 0, value);
 }
 
 
 
-//! PWM a single channel with custom on time
-/*!
- \param led channel (0-15) to set PWM value for
- \param on_value 0-4095 value to turn on the pulse
- \param off_value 0-4095 value to turn off the pulse
+/**
+ * \fn PCA9685_Set_PWM_Duty_REG()
+ * \brief Fonction  de set de la duty cycle d'un PWM.
+ *
+ * \param    ch : numéro du PWM
+ * \param    on_value : valeur de la duty cycle
+ * \param    off_value : valeur de la duty cycle
+ * \return   void
  */
-void setPWM(uint8_t led, int on_value, int off_value)
+void PCA9685_Set_PWM_Duty_REG(uint8_t ch, int on_value, int off_value)
 {
-		PCA9685_Write(PCA9685_ADDR, LED0_ON_L + LED_MULTIPLYER * (led), on_value & 0xFF); 
-		PCA9685_Write(PCA9685_ADDR, LED0_ON_H + LED_MULTIPLYER * (led), on_value >> 8); 
+		PCA9685_Write(PCA9685_ADDR, LED0_ON_L + LED_MULTIPLYER * (ch), on_value & 0xFF); 
+		PCA9685_Write(PCA9685_ADDR, LED0_ON_H + LED_MULTIPLYER * (ch), on_value >> 8); 
 		
-		PCA9685_Write(PCA9685_ADDR, LED0_OFF_L + LED_MULTIPLYER * (led), off_value & 0xFF); 
-		PCA9685_Write(PCA9685_ADDR, LED0_OFF_H + LED_MULTIPLYER * (led), off_value >> 8); 
+		PCA9685_Write(PCA9685_ADDR, LED0_OFF_L + LED_MULTIPLYER * (ch), off_value & 0xFF); 
+		PCA9685_Write(PCA9685_ADDR, LED0_OFF_H + LED_MULTIPLYER * (ch), off_value >> 8); 
 }
 
 
