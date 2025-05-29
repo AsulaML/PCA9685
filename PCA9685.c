@@ -61,7 +61,8 @@ void PCA9685_Set_PWM_Frequency(int freq)
  * \fn PCA9685_Set_PWM_Duty()
  * \brief Fonction  de set de la duty cycle d'un PWM.
  *
- * \param    void
+ * \param    uint8_t led : channel
+ * \param    int value : 
  * \return   void
  */
 void PCA9685_Set_PWM_Duty(uint8_t led, int value) 
@@ -114,7 +115,16 @@ int PCA9685_Get_PWM(uint8_t ch)
 
 
 
-
+/**
+ * \fn PCA9685_Write()
+ * \brief Fonction d'écriture d'un registre.
+ *
+ * \param    uint16_t SlaveDeviceAddress : 
+ * \param    uint8_t RegisterAddress : 
+ * \param    uint8_t Data :
+ * 
+ * \return  void
+ */
 void PCA9685_Write(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t Data) 
 {
     uint8_t         writeBuffer[5];
@@ -178,6 +188,16 @@ void PCA9685_Write(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t
 
 
 
+/**
+ * \fn PCA9685_Read()
+ * \brief Fonction de lecture d'un registre.
+ *
+ * \param    uint16_t SlaveDeviceAddress : 
+ * \param    uint8_t RegisterAddress : 
+ * \param    uint8_t * Data:
+ * 
+ * \return  void
+ */
 uint8_t PCA9685_Read(uint16_t SlaveDeviceAddress, uint8_t RegisterAddress, uint8_t *Data) 
 {
     I2C2_MESSAGE_STATUS status;
